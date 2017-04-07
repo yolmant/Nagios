@@ -1,0 +1,23 @@
+#!/bin/bash
+
+#installing nagios packages
+yum -y install nagios 
+
+#turn off security enhace of linux
+setenforce 0
+
+#installing plugins and nagios client service
+yum -y install nagios-plugins-all nrpe
+
+#enabling and stating services
+systemctl enable nagios httpd nrpe
+systemctl start nrpe
+systemctl start nagios httpd
+
+#create an admin user with password
+htpasswd -c /etc/nagios/passwd nagiosadmin <<< 123456
+
+#restart all the services
+systemctl restart nagios httpd nrpe
+
+
