@@ -19,5 +19,3 @@ htpasswd -c /etc/nagios/passwd nagiosadmin <<< 123456
 
 #restart all the services
 systemctl restart nagios httpd nrpe
-
-
