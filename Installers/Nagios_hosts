@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#configuration of remote host to nagios server
+
+#installing all the necessary packages
+yum -y install httpd nrpe nagios-plugins-all
+
+#modify the nrpe file configuration to connect with the server
+sed -i "s/allowed_hosts=127.0.0.1/allowed_hosts=127.0.0.1,10.128.0.0\/24/" /etc/nagios/nrpe.cfg
+sed -i "s/dont_blame_nrpe=0/dont_blame_nrpe=1/" /etc/nagios/nrpe.cfg
+
+#star and enable all the services
+systemctl enable nrpe httpd
+systemctl start nrpe httpd
+
