@@ -15,21 +15,24 @@ systemctl start nrpe
 systemctl start nagios httpd
 
 #create an admin user with password
-htpasswd -c /etc/nagios/passwd nagiosadmin <<< 123456
+htpasswd -ci /etc/nagios/passwd nagiosadmin <<< 123456
 
 #modify the nrpe file configuration
 sed -i "s/allowed_hosts=127.0.0.1/allowed_hosts=127.0.0.1,10.128.0.0\/24/" /etc/nagios/nrpe.cfg
 sed -i "s/dont_blame_nrpe=0/dont_blame_nrpe=1/" /etc/nagios/nrpe.cfg 
 
 #create a file configuration for the remote host
-echo '#define host
+sh -c 'cat > /etc/nagios/conf.d/host1.cfg' << EF
+#define host
 define host {
         use             linux-server
         host_name       client-test
         alias           client-test
-        address         10.128.0.1
+        address         10.128.0.2
         }
+
 #DEFINING SERVICES
+
 #PING service
 define service{
         use                     generic-service
@@ -37,6 +40,7 @@ define service{
         service_description     PING
         check_command           check_ping!100.0,20%!500.0,60%
         }
+
 #HTTP services check
 define service{
         use                     generic-service
@@ -45,6 +49,7 @@ define service{
         check_command           check_http
         notifications_enabled   0
         }
+
 #SSH services check
 define service{
         use                     generic-service
@@ -52,7 +57,8 @@ define service{
         service_description     SSH
         check_command           check_ssh
         notifications_enabled   0
-        }' >>> /etc/nagios/conf.d/host1.cfg
+        }
+EF
 
 #restart all services
 systemctl restart httpd nagios nrpe
