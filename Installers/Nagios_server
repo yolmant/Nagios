@@ -7,7 +7,7 @@ yum -y install nagios
 setenforce 0
 
 #installing plugins and nagios client service
-yum -y install nagios-plugins-all nrpe chech_nrpe
+yum -y install nagios-plugins-all nrpe chech_nrpe wget
 
 #enabling and stating services
 systemctl enable nagios httpd nrpe
@@ -113,6 +113,12 @@ define command{
 sed -i "215i command[check_disk]=\/usr\/lib64\/nagios\/plugins\/check_disk -w 20% -c 10% -p \/dev\/sda1" /etc/nagios/nrpe.cfg
 sed -i "216i command[check_procs]=\/usr\/lib64\/nagios\/plugins\/check_procs -w 150 -c 200" /etc/nagios/nrpe.cfg
 sed -i "217i command[check_mem]=/usr/lib64/nagios/plugins/check_mem  -f -w 20 -c 10" /etc/nagios/nrpe.cfg
+
+#install check_mem
+cd /usr/lib64/nagios/plugins/
+wget https://raw.githubusercontent.com/justintime/nagios-plugins/master/check_mem/check_mem.pl
+mv check_mem.pl check_mem
+chmod +x check_mem
 
 #restart all services
 systemctl restart httpd nagios nrpe
