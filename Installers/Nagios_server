@@ -111,8 +111,8 @@ define command{
 
 echo '#Memory RAM service check
 define service{
-        use                      generic-service
-        host_name                client-test
+        use                      local-service
+        host_name                localhost
         service_description      Check RAM
         check_command            check_nrpe!check_mem
         }
