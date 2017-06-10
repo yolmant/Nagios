@@ -133,4 +133,5 @@ chmod +x check_mem
 systemctl restart httpd nagios nrpe
 
 #remmeber to erase the swap usage check from the localhost.cfg to not damage the hard disk of the device
+#remember to create a html file to get rid of the warning in the http service check
 
