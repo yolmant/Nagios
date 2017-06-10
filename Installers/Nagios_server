@@ -7,7 +7,7 @@ yum -y install nagios
 setenforce 0
 
 #installing plugins and nagios client service
-yum -y install nagios-plugins-all nrpe
+yum -y install nagios-plugins-all nrpe chech_nrpe
 
 #enabling and stating services
 systemctl enable nagios httpd nrpe
@@ -60,6 +60,20 @@ define service{
         }
 EF
 
+#add check_nrpe command definition
+echo '# check_nrpe command definition
+define command{
+        command_name check_nrpe
+        command_line $USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$
+}
+' >> /etc/nagios/objects/commands.cfg
+
+#adjust built-in command definitions in nrpe.cfg
+sed -i "215i command[check_disk]=\/usr\/lib64\/nagios\/plugins\/check_disk -w 20% -c 10% -p \/dev\/sda1" /etc/nagios/nrpe.cfg
+sed -i "216i command[check_procs]=\/usr\/lib64\/nagios\/plugins\/check_procs -w 150 -c 200" /etc/nagios/nrpe.cfg
+
 #restart all services
 systemctl restart httpd nagios nrpe
+
+
 
