@@ -7,7 +7,7 @@ yum -y install nagios
 setenforce 0
 
 #installing plugins and nagios client service
-yum -y install nagios-plugins-all nrpe chech_nrpe wget
+yum -y install nagios-plugins-all nrpe check_nrpe wget
 
 #enabling and stating services
 systemctl enable nagios httpd nrpe
