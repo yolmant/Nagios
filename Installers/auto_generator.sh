@@ -39,7 +39,7 @@ do
 		systemctl restart nrpe nagios httpd
 		
 		#send a message to a cellphone number to confirm the changes
-		echo "Changes in the Network - $host - $Ip were added to the network and configurated" | mail -s "project-y" 18328710948@tmomail.net
+		echo "Changes in the Network - $host - $Ip were added to the network and configurated" | mail -s "project-y" *********@tmomail.net
 		
 		#save the IP in the Nagios-server
 		echo $Ip >> /Network/Ips.txt
