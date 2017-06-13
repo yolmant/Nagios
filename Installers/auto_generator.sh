@@ -7,16 +7,14 @@ list=$(gcloud compute instances list | tail -n+2 | awk '{print $4}')
 for ((i=1; i<=$(echo "$list" | wc -w); i++))
 do
 	#assign the IP to the variable
-	Ip=$( echo "$list" | sed -n "$i p")
+	Ip=$(echo "$list" | sed -n "$i p")
 
 	#verify the IP
-	if grep -R $Ip /Network/Ips.txt
+	if  grep -R $Ip /Network/Ips.txt
 	then
 		#if the IP is already in the Nagios
 		echo "Ip already Included"
 		
-		#send a message to cellphone number
-		echo "No changes in the Network - all servers including in the monitoring" | mail -s "project-Y" 18328710948@tmomail.net
 	else
 		#if the Ip is not create the configuration file for Nagios
 		echo "Creating configuration"
@@ -34,14 +32,14 @@ do
 		#execute the installation of the repo and nagios
 		gcloud compute ssh yojetoga@$host --command "sudo cp /home/yojetoga/plugins.repo /etc/yum.repos.d/plugins.repo"
 		gcloud compute ssh yojetoga@$host --command "sudo yum repolist"
-		gcloud compute ssh yojetoga@$host --command "sudo bash Nagios_hosts"
+	 	gcloud compute ssh yojetoga@$host --command "sudo bash Nagios_hosts"
 		gcloud compute ssh yojetoga@$host --command "sudo yum -y install plugins"
 		gcloud compute ssh yojetoga@$host --command "sudo systemctl restart nrpe"
 		
 		systemctl restart nrpe nagios httpd
 		
 		#send a message to a cellphone number to confirm the changes
-		echo "Changes in the Network - hots: $host - $Ip were added to the network and configuration has been installed - Instance included in the monitoring" | mail -s "project-y" 18328710948@tmomail.net
+		echo "Changes in the Network - $host - $Ip were added to the network and configurated" | mail -s "project-y" 18328710948@tmomail.net
 		
 		#save the IP in the Nagios-server
 		echo $Ip >> /Network/Ips.txt
