@@ -1,7 +1,10 @@
 #!/bin/bash
 
 #create a new directory
-mkdir /Network/
+mkdir /Network
 
 #create a file with the Ip of the nagios server
 echo "[Network IP]\n$(hostname -i)" >> /Network/Ips.txt
+
+#change permission
+chmod +x /Network/Ips.txt
