@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#create a new directory
+mkdir /Network/
+
+#create a file with the Ip of the nagios server
+echo "[Network IP]\n$(hostname -i)" >> /Network/Ips.txt
