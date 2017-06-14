@@ -9,7 +9,7 @@ do
 	#assign the IP to the variable
 	Ip=$(echo "$list" | sed -n "$i p")
 
-	#verify the IP
+	#verify the IP form the the file IPs.txt created in Network directory using mkdir /Network
 	if  grep -R $Ip /Network/Ips.txt
 	then
 		#if the IP is already in the Nagios
