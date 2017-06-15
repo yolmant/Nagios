@@ -38,7 +38,6 @@ define service{
         host_name               $Host
         service_description     HTTP
         check_command           check_http
-        notifications_enabled   0
         }
 
 
@@ -48,7 +47,6 @@ define service{
         host_name               $Host
         service_description     SSH
         check_command           check_ssh
-        notifications_enabled   0
         }
 
 #Disk service check      
